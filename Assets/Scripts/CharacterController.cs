@@ -13,6 +13,14 @@ public class CharacterController : MonoBehaviour
 
     void Update()
     {
+        MousePressed();
+        KeyPressed();
+    }
+
+
+
+    void MousePressed()
+    {
         if (Input.GetMouseButtonDown(1)) // 右クリック
         {
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
@@ -22,6 +30,14 @@ public class CharacterController : MonoBehaviour
             {
                 agent.SetDestination(hit.point);
             }
+        }
+    }
+
+    void KeyPressed()
+    {
+        if(Input.GetKeyDown(KeyCode.S))
+        {
+            agent.SetDestination(this.transform.position);
         }
     }
 }
