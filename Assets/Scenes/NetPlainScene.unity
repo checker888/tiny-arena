@@ -130,6 +130,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1668095193498624192, guid: 148f869043b74b74ca8e83d72dfc1a6e, type: 3}
+      propertyPath: sceneViewId
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1668095193498624192, guid: 148f869043b74b74ca8e83d72dfc1a6e, type: 3}
+      propertyPath: ObservedComponents.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4684403152539725594, guid: 148f869043b74b74ca8e83d72dfc1a6e, type: 3}
       propertyPath: m_LocalPosition.x
       value: -27.33
@@ -284,6 +292,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 388067456750923174, guid: a8a2cd913a1225e4eaa8db7b4d927b0a, type: 3}
+      propertyPath: sceneViewId
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 388067456750923174, guid: a8a2cd913a1225e4eaa8db7b4d927b0a, type: 3}
+      propertyPath: ObservedComponents.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1328023254706044480, guid: a8a2cd913a1225e4eaa8db7b4d927b0a, type: 3}
       propertyPath: m_Name
       value: FemaleCharacterPolyart
@@ -777,7 +793,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 2015526794}
+  m_Mesh: {fileID: 2021722034}
 --- !u!33 &1344711217
 MeshFilter:
   m_ObjectHideFlags: 10
@@ -1468,7 +1484,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 2015526794}
+  m_Mesh: {fileID: 866084683}
 --- !u!33 &1443743849
 MeshFilter:
   m_ObjectHideFlags: 10

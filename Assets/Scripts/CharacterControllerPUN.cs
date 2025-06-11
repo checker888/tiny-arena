@@ -16,6 +16,7 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable
 
     void Start()
     {
+        cam = GameObject.Find("Main Camera").GetComponent<Camera>();
         agent = GetComponent<NavMeshAgent>();
         networkPosition = transform.position;
         networkRotation = transform.rotation;
