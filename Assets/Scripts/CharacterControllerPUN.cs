@@ -68,7 +68,12 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable
     async UniTaskVoid StartMoveLoop()
     {
         // 古いタスクがあればキャンセル
-        StopMoving();
+        if (moveCts != null && !moveCts.IsCancellationRequested)
+        {
+            moveCts.Cancel();
+            moveCts.Dispose();
+            moveCts = null;
+        }
 
         moveCts = new CancellationTokenSource();
         var token = moveCts.Token;
