@@ -1653,9 +1653,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputField: {fileID: 202080329}
-  RoomNameUI: {fileID: 0}
-  ConnectingUI: {fileID: 0}
-  LobbyUI: {fileID: 0}
+  RoomNameUI: {fileID: 1531106443}
+  ConnectingUI: {fileID: 560180356}
+  LobbyUI: {fileID: 1418269258}
   ChooseModeUI: {fileID: 1157172885}
   button: {fileID: 1160256692}
   playerCountText: {fileID: 1389029429}
