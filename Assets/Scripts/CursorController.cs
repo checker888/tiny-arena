@@ -43,12 +43,12 @@ public class CursorController : MonoBehaviour
     {
         if (cursorLock && !cursorApplied && customCursor != null)
         {
-            Cursor.SetCursor(customCursor, hotspot, CursorMode.Auto);
+            Cursor.SetCursor(customCursor, hotspot, CursorMode.ForceSoftware);
             cursorApplied = true;
         }
         else if (!cursorLock && cursorApplied)
         {
-            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+            Cursor.SetCursor(null, Vector2.zero, CursorMode.ForceSoftware);
             cursorApplied = false;
         }
     }
