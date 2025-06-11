@@ -771,8 +771,8 @@ MonoBehaviour:
   mainCameraObj: {fileID: 108407276}
   moveSpeed: 30
   toplimit: 25
-  bottomlimit: -25
-  leftlimit: -25
+  bottomlimit: -10
+  leftlimit: -30
   rightlimit: 0
 --- !u!1 &1344711213
 GameObject:
