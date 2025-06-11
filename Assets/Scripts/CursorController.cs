@@ -7,16 +7,16 @@ public class CursorController : MonoBehaviour
     public bool cursorLock = true;
     public Texture2D customCursor;
     public Vector2 hotspot = Vector2.zero;
+    public bool cursorApplied = false;
 
-    private bool cursorApplied = false;
+    public bool isInGame = false;
 
     void Update()
     {
-        UpdateCursorLock();
         DrawMyCursor();
     }
 
-    public void UpdateCursorLock()
+    public virtual void UpdateCursorLock()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -27,7 +27,7 @@ public class CursorController : MonoBehaviour
             cursorLock = true;
         }
 
-        if (cursorLock)
+        if (cursorLock && isInGame)
         {
             Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = true;
@@ -39,7 +39,7 @@ public class CursorController : MonoBehaviour
         }
     }
 
-    void DrawMyCursor()
+    public virtual void DrawMyCursor()
     {
         if (cursorLock && !cursorApplied && customCursor != null)
         {
