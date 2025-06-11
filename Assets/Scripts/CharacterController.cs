@@ -7,7 +7,7 @@ using Unity.VisualScripting;
 
 public class CharacterController : MonoBehaviour
 {
-    public Camera cam;               // ƒJƒƒ‰iInspector‚©‚çƒAƒTƒCƒ“j
+    public Camera cam;               // ã‚«ãƒ¡ãƒ©ï¼ˆInspectorã‹ã‚‰ã‚¢ã‚µã‚¤ãƒ³ï¼‰
     private NavMeshAgent agent;
     private CancellationTokenSource moveCts;
 
@@ -26,7 +26,7 @@ public class CharacterController : MonoBehaviour
 
     void MousePressed()
     {
-        if (Input.GetMouseButtonDown(1)) // ‰EƒNƒŠƒbƒN
+        if (Input.GetMouseButtonDown(1)) // å³ã‚¯ãƒªãƒƒã‚¯
         {
             StartMoveLoop().Forget();
         }
@@ -48,7 +48,7 @@ public class CharacterController : MonoBehaviour
 
     async UniTaskVoid StartMoveLoop()
     {
-        // ŒÃ‚¢ƒ^ƒXƒN‚ª‚ ‚ê‚ÎƒLƒƒƒ“ƒZƒ‹
+        // å¤ã„ã‚¿ã‚¹ã‚¯ãŒã‚ã‚Œã°ã‚­ãƒ£ãƒ³ã‚»ãƒ«
         StopMoving();
 
         moveCts = new CancellationTokenSource();
@@ -65,12 +65,12 @@ public class CharacterController : MonoBehaviour
                         agent.SetDestination(hit.point);
                 }
 
-                await UniTask.Delay(500, cancellationToken: token); // 0.5•b‚²‚Æ‚ÉÄİ’è
+                await UniTask.Delay(500, cancellationToken: token); // 0.5ç§’ã”ã¨ã«å†è¨­å®š
             }
         }
         catch (OperationCanceledException)
         {
-            // ƒLƒƒƒ“ƒZƒ‹‚³‚ê‚½ê‡‚Í–³‹
+            // ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã•ã‚ŒãŸå ´åˆã¯ç„¡è¦–
         }
     }
 
@@ -83,7 +83,7 @@ public class CharacterController : MonoBehaviour
             moveCts = null;
         }
 
-        // ‚»‚Ìê‚Å’â~i–Ú•WˆÊ’u‚ğŒ»İˆÊ’u‚Éj
+        // ãã®å ´ã§åœæ­¢ï¼ˆç›®æ¨™ä½ç½®ã‚’ç¾åœ¨ä½ç½®ã«ï¼‰
         if (agent != null && agent.isOnNavMesh)
         {
             agent.SetDestination(transform.position);
