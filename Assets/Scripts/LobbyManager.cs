@@ -81,7 +81,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public void startbutton()
     {
-        // すでに2人目のプレイヤーなら、即座にシーン遷移
         if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
         {
             StartGame();
@@ -93,7 +92,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient)
         {
             Debug.Log("Master client is starting the game...");
-            PhotonNetwork.LoadLevel("main");
+            PhotonNetwork.LoadLevel("NetPlainScene");
         }
     }
 }

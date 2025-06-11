@@ -4,26 +4,35 @@ using Cysharp.Threading.Tasks;
 using System.Threading;
 using System;
 using Unity.VisualScripting;
+using Photon.Pun;
 
-public class CharacterController : MonoBehaviour
+public class CharacterControllerPun : MonoBehaviourPun, IPunObservable
 {
-
-
     public Camera cam;               // カメラ（Inspectorからアサイン）
     private NavMeshAgent agent;
     private CancellationTokenSource moveCts;
+    private Vector3 networkPosition;
+    private Quaternion networkRotation;
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-
-
+        networkPosition = transform.position;
+        networkRotation = transform.rotation;
     }
 
     void Update()
     {
-        MousePressed();
-        KeyPressed();
+        if(PhotonNetwork.IsMasterClient)
+        {
+            MousePressed();
+            KeyPressed();
+        }else
+        {
+            transform.position = networkPosition;
+            transform.rotation = networkRotation;
+        }
+
     }
 
 
@@ -42,7 +51,7 @@ public class CharacterController : MonoBehaviour
         {
             StopMoving();
         }
-    }
+    } 
 
 
 
@@ -91,6 +100,21 @@ public class CharacterController : MonoBehaviour
         if (agent != null && agent.isOnNavMesh)
         {
             agent.SetDestination(transform.position);
+        }
+    }
+
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting && PhotonNetwork.IsMasterClient)
+        {
+            stream.SendNext(transform.position);
+            stream.SendNext(transform.rotation);  // ← 向きも送る
+        }
+        else
+        {
+            networkPosition = (Vector3)stream.ReceiveNext();
+            networkRotation = (Quaternion)stream.ReceiveNext();  // ← 向きも受け取る
         }
     }
 }
