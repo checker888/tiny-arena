@@ -16,10 +16,15 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable
 
     void Start()
     {
-        cam = GameObject.Find("Main Camera").GetComponent<Camera>();
+        
         agent = GetComponent<NavMeshAgent>();
         networkPosition = transform.position;
         networkRotation = transform.rotation;
+
+        if (photonView.IsMine)
+        {
+            cam = GameObject.Find("Main Camera").GetComponent<Camera>();
+        }
     }
 
     void Update()
@@ -107,7 +112,7 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        if (stream.IsWriting && PhotonNetwork.IsMasterClient)
+        if (stream.IsWriting)
         {
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);  // ← 向きも送る
