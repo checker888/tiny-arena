@@ -24,7 +24,7 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable
 
     void Update()
     {
-        if(PhotonNetwork.IsMasterClient)
+        if(photonView.IsMine)
         {
             MousePressed();
             KeyPressed();
