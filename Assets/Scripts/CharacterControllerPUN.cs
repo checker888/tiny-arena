@@ -114,8 +114,12 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable
         }
         else
         {
-            networkPosition = (Vector3)stream.ReceiveNext();
-            networkRotation = (Quaternion)stream.ReceiveNext();  // ← 向きも受け取る
+            if(stream.IsReading)
+            {
+                networkPosition = (Vector3)stream.ReceiveNext();
+                networkRotation = (Quaternion)stream.ReceiveNext();  // ← 向きも受け取る
+            }
+            
         }
     }
 }
