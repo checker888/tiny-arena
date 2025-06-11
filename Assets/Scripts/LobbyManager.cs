@@ -79,7 +79,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     }
 
 
-    public void startbutton()
+    public void StartButton()
     {
         if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
         {
