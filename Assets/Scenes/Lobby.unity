@@ -1218,9 +1218,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: NetworkManager, Assembly-CSharp
-        m_MethodName: startbutton
+      - m_Target: {fileID: 1386742493}
+        m_TargetAssemblyTypeName: LobbyManager, Assembly-CSharp
+        m_MethodName: EnterRoom
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1352,7 +1352,7 @@ MonoBehaviour:
   UI0: {fileID: 1531106443}
   UI1: {fileID: 560180356}
   UI2: {fileID: 1418269258}
-  button: {fileID: 941448612}
+  button: {fileID: 1160256692}
   playerCountText: {fileID: 1389029429}
 --- !u!1 &1389029427
 GameObject:
