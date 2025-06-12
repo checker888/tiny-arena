@@ -43,7 +43,7 @@ public class FireBallController : AttackBase
         float distanceMoved = Vector3.Distance(startPos, transform.position);
         if (distanceMoved >= range)
         {
-            Destroy(gameObject);
+            PhotonNetwork.Destroy(gameObject);
         }
 
 

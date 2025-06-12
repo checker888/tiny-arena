@@ -15,7 +15,7 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable,IDamageab
     public GameObject canvasObj;
     private CanvasController canvasController;
     public GameObject fireballPrefab;
-    public int team = 0;
+    public int team;
 
     //ステータス
     public float moveSpeed = 3.5f;
