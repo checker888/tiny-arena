@@ -4854,6 +4854,7 @@ GameObject:
   - component: {fileID: 1206498299807332549}
   - component: {fileID: 1206498299807332548}
   - component: {fileID: 8336275602659357518}
+  - component: {fileID: 5558980040393624565}
   m_Layer: 0
   m_Name: CFXR4 Sun
   m_TagString: Untagged
@@ -9832,6 +9833,21 @@ MonoBehaviour:
     perlinColor: 0
     perlinColorSpeed: 1
   fadeOutReference: {fileID: 1206498299807332549}
+--- !u!114 &5558980040393624565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1206498299807332555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2e18f05ec6b809498923cef171842d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitEffect: {fileID: 0}
+  speed: 12
+  startPos: {x: 0, y: 0, z: 0}
 --- !u!1 &7747002053765534775
 GameObject:
   m_ObjectHideFlags: 0

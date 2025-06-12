@@ -24,14 +24,18 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable
     public int hp = 1000;
     public int ap = 100;
 
+    //ラグ補正
+    private Vector3 lastReceivedPos;
+    private Vector3 lastReceivedVel;
+    private float lastRecvTime;
+    private const float interpTime = 0.1f;   // 100 ms で目的地に追従
+
     void Start()
     {
         canvasController = canvasObj.GetComponent<CanvasController>();
         agent = GetComponent<NavMeshAgent>();
-        networkPosition = transform.position;
-        networkRotation = transform.rotation;
+        lastReceivedPos = transform.position;
 
-        
 
         if (photonView.IsMine)
         {
@@ -57,8 +61,13 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable
         }
         else
         {
-            transform.position = networkPosition;
-            transform.rotation = networkRotation;
+            //ラグ時間ぶん先読み → 線形補間
+            float lag = (float)(PhotonNetwork.Time - lastRecvTime);      // 送信から経過した秒数
+            Vector3 extrapolatedPos = lastReceivedPos + lastReceivedVel * lag;
+
+            // 補間
+            transform.position = Vector3.Lerp(transform.position, extrapolatedPos, Time.deltaTime / interpTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, networkRotation, Time.deltaTime / interpTime);
         }
         agent.speed = moveSpeed;
         
@@ -167,19 +176,19 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        if (stream.IsWriting)
+        if (stream.IsWriting)                 // 自分 → ネットへ
         {
             stream.SendNext(transform.position);
-            stream.SendNext(transform.rotation);  // ← 向きも送る
+            stream.SendNext(transform.rotation);
+            stream.SendNext(GetComponent<Rigidbody>()?.velocity ?? Vector3.zero);
         }
-        else
+        else                                  // ネット → 自分（他者）
         {
-            if (stream.IsReading)
-            {
-                networkPosition = (Vector3)stream.ReceiveNext();
-                networkRotation = (Quaternion)stream.ReceiveNext();  // ← 向きも受け取る
-            }
+            lastReceivedPos = (Vector3)stream.ReceiveNext();
+            networkRotation = (Quaternion)stream.ReceiveNext();
+            lastReceivedVel = (Vector3)stream.ReceiveNext();
 
+            lastRecvTime = (float)info.SentServerTime; //送信側時間を記録
         }
     }
 
