@@ -22,11 +22,41 @@ public class CanvasController : MonoBehaviour
         mainCameraObj = GameObject.Find("Main Camera");
         mainCamera = mainCameraObj.GetComponent<Camera>();
         hpBarImage = hpBarColorObj.GetComponent<Image>();
+
         myTeam = (int)PhotonNetwork.LocalPlayer.CustomProperties["team"];
+
+
+
+        if(PhotonNetwork.OfflineMode)
+        {
+            characterController = target.GetComponent<CharacterControllerPun>();
+            int targetTeam = characterController.team;
+            setUIColor(myTeam, targetTeam);
+            return;
+        }
+
+
+
+
+
         if (target != null)
         {
             characterController = target.GetComponent<CharacterControllerPun>();
-           
+            if (characterController != null)
+            {
+                // このCanvasがついているキャラのチーム番号を取得
+                if (characterController.photonView.Owner.CustomProperties.TryGetValue("team", out object t))
+                {
+                    int targetTeam = (int)t;
+
+                    // ローカルプレイヤーのチームと比較してUI色変更
+                    if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("team", out object myTeamObj))
+                    {
+                        int myTeam = (int)myTeamObj;
+                        setUIColor(myTeam, targetTeam);
+                    }
+                }
+            }
         }
         else
         {
@@ -62,20 +92,22 @@ public class CanvasController : MonoBehaviour
         }
     }
 
-    public void setUIColor(int team)
+    public void setUIColor(int myTeam, int targetTeam)
     {
-        
-        if(hpBarImage == null)
+        if (hpBarImage == null)
         {
             hpBarImage = hpBarColorObj.GetComponent<Image>();
         }
-        if(myTeam == team)
+
+        if (myTeam == targetTeam)
         {
             hpBarImage.color = Color.green;
-        }else
+        }
+        else
         {
             hpBarImage.color = Color.red;
         }
     }
+
 
 }

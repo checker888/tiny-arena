@@ -30,14 +30,21 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable
         agent = GetComponent<NavMeshAgent>();
         networkPosition = transform.position;
         networkRotation = transform.rotation;
-        team = (int)PhotonNetwork.LocalPlayer.CustomProperties["team"];
+
+        
 
         if (photonView.IsMine)
         {
             cam = GameObject.Find("Main Camera").GetComponent<Camera>();
 
         }
-        canvasController.setUIColor(team);
+
+
+        if (PhotonNetwork.OfflineMode)
+        {
+            return;
+        }
+            team = (photonView.Owner.CustomProperties["team"] is int value) ? value : team;
     }
     
 

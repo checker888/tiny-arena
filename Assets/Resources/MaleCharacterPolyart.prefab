@@ -1787,6 +1787,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvasObj: {fileID: 8216109822944875727}
+  fireballPrefab: {fileID: 0}
+  team: 1
   moveSpeed: 3.5
   hp: 1000
   ap: 100
