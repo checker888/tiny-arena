@@ -8,12 +8,17 @@ using Photon.Pun;
 
 public class CharacterControllerPun : MonoBehaviourPun, IPunObservable
 {
-    public Camera cam;               // カメラ（Inspectorからアサイン）
+    private Camera cam;               // カメラ（Inspectorからアサイン）
     private NavMeshAgent agent;
     private CancellationTokenSource moveCts;
     private Vector3 networkPosition;
     private Quaternion networkRotation;
 
+
+    //ステータス
+    public float moveSpeed = 3.5f;
+    public float hp = 1000f;
+    public float ap = 100f;
     void Start()
     {
         
@@ -38,7 +43,7 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable
             transform.position = networkPosition;
             transform.rotation = networkRotation;
         }
-
+        agent.speed = moveSpeed;
     }
 
 
