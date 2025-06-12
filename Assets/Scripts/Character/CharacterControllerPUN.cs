@@ -36,7 +36,7 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable
             cam = GameObject.Find("Main Camera").GetComponent<Camera>();
 
         }
-        
+        canvasController.setIsMyTeam(photonView.IsMine);
     }
     
 
@@ -53,7 +53,7 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable
             transform.rotation = networkRotation;
         }
         agent.speed = moveSpeed;
-        canvasController.setIsMyTeam(photonView.IsMine);
+        
     }
 
 
