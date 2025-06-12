@@ -129,9 +129,9 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable,IDamageab
 
             Vector3 spawnPosition = transform.position + Vector3.up * 1.0f; ;
 
-
+            int damage = ap;
             // 1. 生成
-            object[] instData = new object[] { ap, team, transform.forward, spawnPosition };
+            object[] instData = new object[] { damage, team, transform.forward, spawnPosition };
             GameObject obj = PhotonNetwork.Instantiate("CFXR4 Sun", spawnPosition, fireRotation, 0, instData);
         }
 
