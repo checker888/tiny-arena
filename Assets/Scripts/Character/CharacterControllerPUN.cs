@@ -13,37 +13,47 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable
     private CancellationTokenSource moveCts;
     private Vector3 networkPosition;
     private Quaternion networkRotation;
+    public GameObject canvasObj;
+    private CanvasController canvasController;
+
 
 
     //ステータス
     public float moveSpeed = 3.5f;
     public float hp = 1000f;
     public float ap = 100f;
+
     void Start()
     {
-        
+        canvasController = canvasObj.GetComponent<CanvasController>();
         agent = GetComponent<NavMeshAgent>();
         networkPosition = transform.position;
         networkRotation = transform.rotation;
 
+
         if (photonView.IsMine)
         {
             cam = GameObject.Find("Main Camera").GetComponent<Camera>();
+
         }
+        
     }
+    
 
     void Update()
     {
-        if(photonView.IsMine)
+        if (photonView.IsMine)
         {
             MousePressed();
             KeyPressed();
-        }else
+        }
+        else
         {
             transform.position = networkPosition;
             transform.rotation = networkRotation;
         }
         agent.speed = moveSpeed;
+        canvasController.setIsMyTeam(photonView.IsMine);
     }
 
 
@@ -58,11 +68,11 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable
 
     void KeyPressed()
     {
-        if(Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.S))
         {
             StopMoving();
         }
-    } 
+    }
 
 
 
@@ -129,12 +139,12 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable
         }
         else
         {
-            if(stream.IsReading)
+            if (stream.IsReading)
             {
                 networkPosition = (Vector3)stream.ReceiveNext();
                 networkRotation = (Quaternion)stream.ReceiveNext();  // ← 向きも受け取る
             }
-            
+
         }
     }
 }

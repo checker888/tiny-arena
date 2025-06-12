@@ -10,6 +10,12 @@ public class GameManager : MonoBehaviour
     {
         DeleteTempCharacter();
 
+        //if(PhotonNetwork.OfflineMode)
+        //{
+        //    PhotonNetwork.Instantiate("MaleCharacterPolyart", new Vector3(-27.3f, 0.05f, 15.0f), Quaternion.Euler(0, 90, 0));
+        //    Instantiate(tempCharaRed, new Vector3(-2.5f, 0.05f, 15.0f), Quaternion.Euler(0, -90, 0));
+        //    return;
+        //}
 
         if (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient)
         {

@@ -1576,7 +1576,7 @@ GameObject:
   - component: {fileID: 91050850277262426}
   - component: {fileID: 2267822738811000969}
   m_Layer: 5
-  m_Name: Fill
+  m_Name: HPBarColor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1786,6 +1786,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d10d81f254a177489462baf45ff7838, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvasObj: {fileID: 8216109822944875727}
   moveSpeed: 3.5
   hp: 1000
   ap: 100
@@ -2988,6 +2989,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldOffset: {x: 0, y: 2.3, z: 0}
   hpBarObj: {fileID: 4902488059448967550}
+  hpBarColorObj: {fileID: 5232534554947453391}
 --- !u!1 &8625773108461827912
 GameObject:
   m_ObjectHideFlags: 0

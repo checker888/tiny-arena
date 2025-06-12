@@ -1,38 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CanvasController : MonoBehaviour
 {
-    // Start is called before the first frame update
     public Vector3 worldOffset = new Vector3(0, 2.2f, 0); // キャラの頭上
-    public GameObject hpBarObj;  
+    public GameObject hpBarObj;
+    public GameObject hpBarColorObj;
+    private Image hpBarImage;
     private Transform target;
 
     private GameObject mainCameraObj;
     private Camera mainCamera;
     private CharacterControllerPun characterController;
+    private bool isMyTeam;
     void Start()
     {
         target = transform.parent;
         mainCameraObj = GameObject.Find("Main Camera");
         mainCamera = mainCameraObj.GetComponent<Camera>();
-
+        hpBarImage = hpBarColorObj.GetComponent<Image>();
         if (target != null)
         {
             characterController = target.GetComponent<CharacterControllerPun>();
-            if (characterController == null)
-            {
-                Debug.LogWarning("親に CharacterControllerPun が見つかりませんでした");
-            }
+           
         }
         else
         {
             Debug.LogWarning("Canvas の親オブジェクトが見つかりません");
         }
+
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (mainCamera == null || target == null || hpBarObj == null) return;
@@ -57,8 +57,22 @@ public class CanvasController : MonoBehaviour
             float baseScale = 10f;                          // 基準スケール（調整可）
             rt.localScale = Vector3.one * scaleFactor * baseScale;
 
-            // もし極端に小さくなるのを防ぎたいならClampしてもOK
-            //rt.localScale = Vector3.one * Mathf.Clamp(scaleFactor * baseScale, 0.8f, 1.2f);
+        }
+    }
+
+    public void setIsMyTeam(bool value)
+    {
+        isMyTeam = value;
+        if(hpBarImage == null)
+        {
+            hpBarImage = hpBarColorObj.GetComponent<Image>();
+        }
+        if(isMyTeam)
+        {
+            hpBarImage.color = Color.green;
+        }else
+        {
+            hpBarImage.color = Color.red;
         }
     }
 
