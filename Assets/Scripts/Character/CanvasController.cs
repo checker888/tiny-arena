@@ -8,6 +8,8 @@ public class CanvasController : MonoBehaviour
 {
     public Vector3 worldOffset = new Vector3(0, 2.2f, 0); // キャラの頭上
     public GameObject hpBarObj;
+    private Slider hpSlider;
+
     public GameObject hpBarColorObj;
     private Image hpBarImage;
     private Transform target;
@@ -22,7 +24,7 @@ public class CanvasController : MonoBehaviour
         mainCameraObj = GameObject.Find("Main Camera");
         mainCamera = mainCameraObj.GetComponent<Camera>();
         hpBarImage = hpBarColorObj.GetComponent<Image>();
-
+        hpSlider = hpBarObj.GetComponent<Slider>();
         myTeam = (int)PhotonNetwork.LocalPlayer.CustomProperties["team"];
 
 
@@ -109,5 +111,12 @@ public class CanvasController : MonoBehaviour
         }
     }
 
+    public void DamagedBar()
+    {
+        float maxHP = characterController.maxHP;
+        float hp = characterController.hp;
+        hpSlider.value = hp / maxHP;
 
+
+    }
 }

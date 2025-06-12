@@ -7,13 +7,11 @@ using Unity.VisualScripting;
 using Photon.Pun;
 using UnityEngine.UIElements;
 
-public class CharacterControllerPun : MonoBehaviourPun, IPunObservable
+public class CharacterControllerPun : MonoBehaviourPun, IPunObservable,IDamageable
 {
     private Camera cam;               // カメラ（Inspectorからアサイン）
     private NavMeshAgent agent;
     private CancellationTokenSource moveCts;
-    private Vector3 networkPosition;
-    private Quaternion networkRotation;
     public GameObject canvasObj;
     private CanvasController canvasController;
     public GameObject fireballPrefab;
@@ -21,11 +19,13 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable
 
     //ステータス
     public float moveSpeed = 3.5f;
+    public int maxHP = 1000;
     public int hp = 1000;
     public int ap = 100;
 
     //ラグ補正
-    private Vector3 lastReceivedPos;
+    private Vector3 networkPosition;
+    private Quaternion networkRotation;
     private Vector3 lastReceivedVel;
     private float lastRecvTime;
     private const float interpTime = 0.1f;   // 100 ms で目的地に追従
@@ -34,7 +34,7 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable
     {
         canvasController = canvasObj.GetComponent<CanvasController>();
         agent = GetComponent<NavMeshAgent>();
-        lastReceivedPos = transform.position;
+        networkPosition = transform.position;
 
 
         if (photonView.IsMine)
@@ -63,7 +63,7 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable
         {
             //ラグ時間ぶん先読み → 線形補間
             float lag = (float)(PhotonNetwork.Time - lastRecvTime);      // 送信から経過した秒数
-            Vector3 extrapolatedPos = lastReceivedPos + lastReceivedVel * lag;
+            Vector3 extrapolatedPos = networkPosition + lastReceivedVel * lag;
 
             // 補間
             transform.position = Vector3.Lerp(transform.position, extrapolatedPos, Time.deltaTime / interpTime);
@@ -95,15 +95,46 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable
         }
     }
 
+    public void Damaged(int damage)
+    {
+        hp -= damage;
+        canvasController.DamagedBar();
+        if(hp < 0)
+        {
+            Death();
+        }
+    }
+
+    public void Death()
+    {
+        Destroy(gameObject);
+    }
+
+
+
+
     public void shootFireBall()
     {
-        // 1. 生成
-        GameObject obj = Instantiate(fireballPrefab, transform.position, transform.rotation);
+        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
 
-        // 2. スクリプトを取得して初期化メソッドを呼ぶ
-        FireBallController fireball = obj.GetComponent<FireBallController>();
-        int power = ap;
-        fireball.Initialize(power, team);
+        if (Physics.Raycast(ray, out RaycastHit hit, 100f))
+        {
+            // ターゲット方向
+            Vector3 direction = (hit.point - transform.position).normalized;
+            direction.y = 0; // 水平方向のみに限定（空を向かないように）
+            
+            // 向きたい方向に回転を作成
+            Quaternion fireRotation = Quaternion.LookRotation(direction);
+            transform.rotation = fireRotation;
+
+            Vector3 spawnPosition = transform.position + Vector3.up * 1.0f; ;
+
+
+            // 1. 生成
+            object[] instData = new object[] { ap, team, transform.forward, spawnPosition };
+            GameObject obj = PhotonNetwork.Instantiate("CFXR4 Sun", spawnPosition, fireRotation, 0, instData);
+        }
+
     }
 
     
@@ -184,7 +215,7 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable
         }
         else                                  // ネット → 自分（他者）
         {
-            lastReceivedPos = (Vector3)stream.ReceiveNext();
+            networkPosition = (Vector3)stream.ReceiveNext();
             networkRotation = (Quaternion)stream.ReceiveNext();
             lastReceivedVel = (Vector3)stream.ReceiveNext();
 

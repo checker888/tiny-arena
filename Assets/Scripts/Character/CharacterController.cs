@@ -4,10 +4,17 @@ using Cysharp.Threading.Tasks;
 using System.Threading;
 using System;
 using Unity.VisualScripting;
+using static Photon.Pun.UtilityScripts.PunTeams;
 
 public class CharacterController : MonoBehaviour
 {
+    public GameObject fireballPrefab;
+    public int team = 0;
 
+    //ステータス
+    public float moveSpeed = 3.5f;
+    public int hp = 1000;
+    public int ap = 100;
 
     public Camera cam;               // カメラ（Inspectorからアサイン）
     private NavMeshAgent agent;
@@ -42,10 +49,23 @@ public class CharacterController : MonoBehaviour
         {
             StopMoving();
         }
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            shootFireBall();
+        }
     }
 
 
+    public void shootFireBall()
+    {
+        // 1. 生成
+        GameObject obj = Instantiate(fireballPrefab, transform.position, transform.rotation);
 
+        // 2. スクリプトを取得して初期化メソッドを呼ぶ
+        FireBallController fireball = obj.GetComponent<FireBallController>();
+        int damage = ap;
+        fireball.Initialize(ap, team, transform.forward, transform.position); // ← forward と startPos 両方明示
+    }
 
 
 
