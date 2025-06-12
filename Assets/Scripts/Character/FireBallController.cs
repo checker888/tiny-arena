@@ -57,7 +57,7 @@ public class FireBallController : AttackBase
     {
 
         //Instantiate(hitEffect, transform.position, Quaternion.identity);
-        if (other.gameObject.tag != "Player" || team == 0) return;
+        if (other.gameObject.tag != "Player" ) return;
 
         CharacterControllerPun characterController = other.gameObject.GetComponent<CharacterControllerPun>();
 
