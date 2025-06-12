@@ -75,6 +75,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
+
+        AssignTeam();
         Debug.Log($"Joined Room. Current player count: {PhotonNetwork.CurrentRoom.PlayerCount}");
         if (PhotonNetwork.OfflineMode)
         {
@@ -122,6 +124,15 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         {
             StartOfflineModeAsync().Forget();
         }
+    }
+    void AssignTeam()
+    {
+        int team = PhotonNetwork.CurrentRoom.PlayerCount % 2; // 交互に割り当て
+        ExitGames.Client.Photon.Hashtable teamProp = new ExitGames.Client.Photon.Hashtable();
+        teamProp["team"] = team;
+        PhotonNetwork.LocalPlayer.SetCustomProperties(teamProp);
+
+        Debug.Log($"Assigned to team {team}");
     }
 
     public override void OnDisconnected(DisconnectCause cause)

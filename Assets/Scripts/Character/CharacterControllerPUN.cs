@@ -5,6 +5,7 @@ using System.Threading;
 using System;
 using Unity.VisualScripting;
 using Photon.Pun;
+using UnityEngine.UIElements;
 
 public class CharacterControllerPun : MonoBehaviourPun, IPunObservable
 {
@@ -15,13 +16,13 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable
     private Quaternion networkRotation;
     public GameObject canvasObj;
     private CanvasController canvasController;
-
-
+    public GameObject fireballPrefab;
+    public int team = 0;
 
     //ステータス
     public float moveSpeed = 3.5f;
-    public float hp = 1000f;
-    public float ap = 100f;
+    public int hp = 1000;
+    public int ap = 100;
 
     void Start()
     {
@@ -29,14 +30,14 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable
         agent = GetComponent<NavMeshAgent>();
         networkPosition = transform.position;
         networkRotation = transform.rotation;
-
+        team = (int)PhotonNetwork.LocalPlayer.CustomProperties["team"];
 
         if (photonView.IsMine)
         {
             cam = GameObject.Find("Main Camera").GetComponent<Camera>();
 
         }
-        canvasController.setIsMyTeam(photonView.IsMine);
+        canvasController.setUIColor(team);
     }
     
 
@@ -72,10 +73,24 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable
         {
             StopMoving();
         }
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            shootFireBall();
+        }
     }
 
+    public void shootFireBall()
+    {
+        // 1. 生成
+        GameObject obj = Instantiate(fireballPrefab, transform.position, transform.rotation);
 
+        // 2. スクリプトを取得して初期化メソッドを呼ぶ
+        FireBallController fireball = obj.GetComponent<FireBallController>();
+        int power = ap;
+        fireball.Initialize(power, team);
+    }
 
+    
 
 
 
@@ -130,6 +145,19 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable
     }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
@@ -147,4 +175,6 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable
 
         }
     }
+
+
 }

@@ -5,18 +5,24 @@ public class GameManager : MonoBehaviour
 {
     public GameObject tempCharaBlue;
     public GameObject tempCharaRed;
+    public GameObject enemyChara;
 
     void Start()
     {
         DeleteTempCharacter();
 
-        //if(PhotonNetwork.OfflineMode)
-        //{
-        //    PhotonNetwork.Instantiate("MaleCharacterPolyart", new Vector3(-27.3f, 0.05f, 15.0f), Quaternion.Euler(0, 90, 0));
-        //    Instantiate(tempCharaRed, new Vector3(-2.5f, 0.05f, 15.0f), Quaternion.Euler(0, -90, 0));
-        //    return;
-        //}
+        if (PhotonNetwork.OfflineMode)
+        {
+            GameObject myObj = PhotonNetwork.Instantiate("MaleCharacterPolyart", new Vector3(-27.3f, 0.05f, 15.0f), Quaternion.Euler(0, 90, 0));
+            GameObject enemyObj = Instantiate(enemyChara, new Vector3(-2.5f, 0.05f, 15.0f), Quaternion.Euler(0, -90, 0));
+            enemyObj.SetActive(true);
 
+            myObj.GetComponent<CharacterControllerPun>().team = 1;
+            enemyObj.GetComponent<CharacterControllerPun>().team = 2;
+            return;
+        }
+
+        
         if (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient)
         {
             PhotonNetwork.Instantiate("MaleCharacterPolyart", new Vector3(-27.3f, 0.05f, 15.0f), Quaternion.Euler(0, 90, 0));

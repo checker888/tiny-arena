@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,14 +14,15 @@ public class CanvasController : MonoBehaviour
 
     private GameObject mainCameraObj;
     private Camera mainCamera;
+    private int myTeam;
     private CharacterControllerPun characterController;
-    private bool isMyTeam;
     void Start()
     {
         target = transform.parent;
         mainCameraObj = GameObject.Find("Main Camera");
         mainCamera = mainCameraObj.GetComponent<Camera>();
         hpBarImage = hpBarColorObj.GetComponent<Image>();
+        myTeam = (int)PhotonNetwork.LocalPlayer.CustomProperties["team"];
         if (target != null)
         {
             characterController = target.GetComponent<CharacterControllerPun>();
@@ -60,14 +62,14 @@ public class CanvasController : MonoBehaviour
         }
     }
 
-    public void setIsMyTeam(bool value)
+    public void setUIColor(int team)
     {
-        isMyTeam = value;
+        
         if(hpBarImage == null)
         {
             hpBarImage = hpBarColorObj.GetComponent<Image>();
         }
-        if(isMyTeam)
+        if(myTeam == team)
         {
             hpBarImage.color = Color.green;
         }else

@@ -3038,6 +3038,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tempCharaBlue: {fileID: 67142777}
   tempCharaRed: {fileID: 802358758}
+  enemyChara: {fileID: 1328023254706044480, guid: a8a2cd913a1225e4eaa8db7b4d927b0a, type: 3}
 --- !u!4 &1746844027
 Transform:
   m_ObjectHideFlags: 0
