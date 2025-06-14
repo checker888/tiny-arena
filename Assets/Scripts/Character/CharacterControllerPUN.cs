@@ -9,19 +9,30 @@ using UnityEngine.UIElements;
 
 public class CharacterControllerPun : MonoBehaviourPun, IPunObservable,IDamageable
 {
+    public int team;
+
     private Camera cam;               // カメラ（Inspectorからアサイン）
     private NavMeshAgent agent;
+
+
     private CancellationTokenSource moveCts;
     public GameObject canvasObj;
     private CanvasController canvasController;
+
+
     public GameObject fireballPrefab;
-    public int team;
+    
 
     //ステータス
     public float moveSpeed = 3.5f;
     public int maxHP = 1000;
     public int hp = 1000;
     public int ap = 100;
+    public float CoolDownQ = 2.5f;
+    private bool canUseQ = true;
+
+
+
 
     //ラグ補正
     private Vector3 networkPosition;
@@ -91,9 +102,17 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable,IDamageab
         }
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            shootFireBall();
+            if(canUseQ)
+            {
+                StopMoving();
+                shootFireBall();
+                StartQCooldown().Forget();  // クールダウン開始
+            }
+            
         }
+
     }
+
 
     public void Damaged(int damage)
     {
@@ -136,8 +155,14 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable,IDamageab
         }
 
     }
+    private async UniTaskVoid StartQCooldown()
+    {
+        canUseQ = false;
+        await UniTask.Delay(TimeSpan.FromSeconds(CoolDownQ));
+        canUseQ = true;
+    }
 
-    
+
 
 
 
