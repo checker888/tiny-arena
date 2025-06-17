@@ -13,15 +13,22 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable,IDamageab
     private NavMeshAgent agent;
     private CancellationTokenSource moveCts;
     public GameObject canvasObj;
-    private CanvasController canvasController;
+    
     public GameObject fireballPrefab;
     public int team;
+
+    private CanvasController canvasController;
+    private GameUIController gameUIController;
 
     //ステータス
     public float moveSpeed = 3.5f;
     public int maxHP = 1000;
     public int hp = 1000;
     public int ap = 100;
+    public float qCoolDown = 1.5f;
+
+
+    private bool canUseQ = true;
 
     //ラグ補正
     private Vector3 networkPosition;
@@ -40,7 +47,7 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable,IDamageab
         if (photonView.IsMine)
         {
             cam = GameObject.Find("Main Camera").GetComponent<Camera>();
-
+            gameUIController = GameObject.Find("GameUICanvas").GetComponent<GameUIController>();    
         }
 
 
@@ -91,7 +98,14 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable,IDamageab
         }
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            shootFireBall();
+            if(canUseQ)
+            {
+                StopMoving();
+                shootFireBall();
+                StartQCooldown().Forget();
+                gameUIController.ActivateQ(qCoolDown).Forget();
+            }
+            
         }
     }
 
@@ -137,7 +151,12 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable,IDamageab
 
     }
 
-    
+    private async UniTaskVoid StartQCooldown()
+    {
+        canUseQ = false;
+        await UniTask.Delay(TimeSpan.FromSeconds(qCoolDown));
+        canUseQ = true;
+    }
 
 
 

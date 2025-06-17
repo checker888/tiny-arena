@@ -1795,6 +1795,7 @@ MonoBehaviour:
   maxHP: 1000
   hp: 1000
   ap: 100
+  qCoolDown: 2.5
 --- !u!195 &5652406446504348269
 NavMeshAgent:
   m_ObjectHideFlags: 0
