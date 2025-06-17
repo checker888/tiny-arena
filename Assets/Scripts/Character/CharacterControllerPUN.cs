@@ -9,13 +9,16 @@ using UnityEngine.UIElements;
 
 public class CharacterControllerPun : MonoBehaviourPun, IPunObservable,IDamageable
 {
+    public int team;
+
     private Camera cam;               // カメラ（Inspectorからアサイン）
     private NavMeshAgent agent;
+
+
     private CancellationTokenSource moveCts;
     public GameObject canvasObj;
-    
     public GameObject fireballPrefab;
-    public int team;
+    
 
     private CanvasController canvasController;
     private GameUIController gameUIController;
@@ -29,6 +32,8 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable,IDamageab
 
 
     private bool canUseQ = true;
+
+
 
     //ラグ補正
     private Vector3 networkPosition;
@@ -107,7 +112,9 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable,IDamageab
             }
             
         }
+
     }
+
 
     public void Damaged(int damage)
     {
@@ -150,7 +157,6 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable,IDamageab
         }
 
     }
-
     private async UniTaskVoid StartQCooldown()
     {
         canUseQ = false;
