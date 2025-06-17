@@ -109,7 +109,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 3953748157134677678}
   m_FillRect: {fileID: 2090412706559822248}
   m_HandleRect: {fileID: 160423723334513343}
@@ -679,13 +679,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d10d81f254a177489462baf45ff7838, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  team: 2
   canvasObj: {fileID: 1107708181579999548}
   fireballPrefab: {fileID: 1206498299807332555, guid: af6c1e3f046eecd4d81330aeb285600f, type: 3}
-  team: 2
   moveSpeed: 3.5
   maxHP: 1000
   hp: 1000
   ap: 100
+  qCoolDown: 1.5
 --- !u!195 &-3981820843900304551
 NavMeshAgent:
   m_ObjectHideFlags: 0
