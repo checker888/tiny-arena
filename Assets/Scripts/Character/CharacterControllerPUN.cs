@@ -6,11 +6,13 @@ using System;
 using Unity.VisualScripting;
 using Photon.Pun;
 using UnityEngine.UIElements;
+using Cysharp.Threading.Tasks.Triggers;
 
 public class CharacterControllerPun : MonoBehaviourPun, IPunObservable,IDamageable
 {
     public int team;
 
+    private GameObject cameraObj;
     private Camera cam;               // カメラ（Inspectorからアサイン）
     private NavMeshAgent agent;
 
@@ -51,7 +53,8 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable,IDamageab
 
         if (photonView.IsMine)
         {
-            cam = GameObject.Find("Main Camera").GetComponent<Camera>();
+            cameraObj = GameObject.Find("Main Camera");
+            cam = cameraObj.GetComponent<Camera>();
             gameUIController = GameObject.Find("GameUICanvas").GetComponent<GameUIController>();    
         }
 
@@ -113,6 +116,15 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable,IDamageab
             
         }
 
+
+        if(Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.C))
+        {
+            Vector3 camPos = cameraObj.transform.position;
+            camPos.x = transform.position.x;
+            camPos.z = transform.position.z - 10f;
+
+            cam.transform.position = camPos;
+        }
     }
 
 
