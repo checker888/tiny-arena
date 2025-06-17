@@ -22,11 +22,7 @@ public abstract class AttackBase : MonoBehaviourPun, IPunObservable, IPunInstant
 
     protected virtual void Start()
     {
-        startPos = transform.position;
-        if (photonView.IsMine)
-        {
-            velocity = transform.forward * speed; // 自前で速度設定
-        }
+
 
     }
     public virtual void OnPhotonInstantiate(PhotonMessageInfo info)

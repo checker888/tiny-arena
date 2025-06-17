@@ -26,7 +26,8 @@ public class GameUIController : MonoBehaviour
     private TextMeshProUGUI R_UIText;
 
     private CancellationTokenSource qCts;
-
+    private CancellationTokenSource wCts;
+    private CancellationTokenSource eCts;
     // Start is called before the first frame update
     void Start()
     {
@@ -73,11 +74,55 @@ public class GameUIController : MonoBehaviour
 
     public async UniTaskVoid ActivateW(float cooltime)
     {
+        wCts?.Cancel();
+        wCts = new CancellationTokenSource();
+        var token = wCts.Token;
 
+        float timeLeft = cooltime;
+        W_UIImage.color = Color.gray;
+
+        try
+        {
+            while (timeLeft > 0)
+            {
+                W_UIText.text = timeLeft.ToString("F1");
+                await UniTask.Delay(100, cancellationToken: token);
+                timeLeft -= 0.1f;
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            return; // キャンセルされたらここで抜ける
+        }
+
+        W_UIImage.color = Color.white;
+        W_UIText.text = "W";
     }
     public async UniTaskVoid ActivateE(float cooltime)
     {
+        eCts?.Cancel();
+        eCts = new CancellationTokenSource();
+        var token = eCts.Token;
 
+        float timeLeft = cooltime;
+        E_UIImage.color = Color.gray;
+
+        try
+        {
+            while (timeLeft > 0)
+            {
+                E_UIText.text = timeLeft.ToString("F1");
+                await UniTask.Delay(100, cancellationToken: token);
+                timeLeft -= 0.1f;
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            return; // キャンセルされたらここで抜ける
+        }
+
+        E_UIImage.color = Color.white;
+        E_UIText.text = "E";
     }
     public async UniTaskVoid ActivateR(float cooltime)
     {

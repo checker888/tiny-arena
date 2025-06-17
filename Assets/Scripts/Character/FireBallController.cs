@@ -6,12 +6,17 @@ using Photon.Realtime;
 
 public class FireBallController : AttackBase
 {
+   
     //public GameObject hitEffect;
     protected override void Start()
     {
         speed = 10f;
         range = 8.0f;
-        base.Start();
+        startPos = transform.position;
+        if (photonView.IsMine)
+        {
+            velocity = transform.forward * speed; // 自前で速度設定
+        }
 
     }
 

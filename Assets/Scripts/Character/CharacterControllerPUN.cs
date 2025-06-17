@@ -26,16 +26,17 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable,IDamageab
     private GameUIController gameUIController;
 
     //ステータス
-    public float moveSpeed = 3.5f;
+    private float moveSpeed = 3.5f;
     public int maxHP = 1000;
     public int hp = 1000;
-    public int ap = 100;
-    public float qCoolDown = 1.5f;
-
+    private int ap = 100;
+    private float qCoolDown = 1.5f;
+    private float wCoolDown = 3.5f;
+    private float eCoolDown = 15.0f;
 
     private bool canUseQ = true;
-
-
+    private bool canUseW = true;
+    private bool canUseE = true;
 
     //ラグ補正
     private Vector3 networkPosition;
@@ -109,15 +110,33 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable,IDamageab
             if(canUseQ)
             {
                 StopMoving();
-                shootFireBall();
+                FireBall();
                 StartQCooldown().Forget();
                 gameUIController.ActivateQ(qCoolDown).Forget();
             }
             
         }
+        if(Input.GetKeyDown(KeyCode.W))
+        {
+            if (canUseW)
+            {
+                StopMoving();
+                MagicCircle();
+                StartWCooldown().Forget();
+                gameUIController.ActivateW(wCoolDown).Forget();
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (canUseE)
+            {
+                SpeedUp().Forget();
+                StartECooldown().Forget();
+                gameUIController.ActivateE(eCoolDown).Forget();
+            }
+        }
 
-
-        if(Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.C))
+        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.C))
         {
             Vector3 camPos = cameraObj.transform.position;
             camPos.x = transform.position.x;
@@ -146,7 +165,7 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable,IDamageab
 
 
 
-    public void shootFireBall()
+    public void FireBall()
     {
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
 
@@ -155,12 +174,14 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable,IDamageab
             // ターゲット方向
             Vector3 direction = (hit.point - transform.position).normalized;
             direction.y = 0; // 水平方向のみに限定（空を向かないように）
-            
+
             // 向きたい方向に回転を作成
             Quaternion fireRotation = Quaternion.LookRotation(direction);
             transform.rotation = fireRotation;
 
             Vector3 spawnPosition = transform.position + Vector3.up * 1.0f; ;
+
+            
 
             int damage = ap;
             // 1. 生成
@@ -169,14 +190,48 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable,IDamageab
         }
 
     }
+
+    public void MagicCircle()
+    {
+        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, 100f))
+        {
+            Vector3 spawnPosition = hit.point + Vector3.up * 0.5f + Vector3.back* 0.1f;
+
+            int damage = (int)(ap * 1.5f);
+            // 1. 生成
+            object[] instData = new object[] { damage, team, transform.forward, spawnPosition };
+            GameObject obj = PhotonNetwork.Instantiate("CFXR3 Magic Aura A (Runic)", spawnPosition, transform.rotation, 0, instData);
+        }
+    }
+
+    public async UniTaskVoid SpeedUp()
+    {
+        float workSpeed = moveSpeed;
+        moveSpeed *= 1.5f;
+        await UniTask.Delay(3000);
+        moveSpeed = workSpeed;
+    }
+
     private async UniTaskVoid StartQCooldown()
     {
         canUseQ = false;
         await UniTask.Delay(TimeSpan.FromSeconds(qCoolDown));
         canUseQ = true;
     }
-
-
+    private async UniTaskVoid StartWCooldown()
+    {
+        canUseW = false;
+        await UniTask.Delay(TimeSpan.FromSeconds(wCoolDown));
+        canUseW = true;
+    }
+    private async UniTaskVoid StartECooldown()
+    {
+        canUseE = false;
+        await UniTask.Delay(TimeSpan.FromSeconds(eCoolDown));
+        canUseE = true;
+    }
 
 
     async UniTaskVoid StartMoveLoop()
