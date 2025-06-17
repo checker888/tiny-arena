@@ -77,6 +77,7 @@ public class MagicCircleController : AttackBase
                 }
             }
         }
+        PhotonNetwork.Instantiate("MagicCircle_Explosion", transform.position, Quaternion.Euler(90, 0, 0));
         PhotonNetwork.Destroy(gameObject);
     }
 }

@@ -1791,12 +1791,8 @@ MonoBehaviour:
   team: 1
   canvasObj: {fileID: 8216109822944875727}
   fireballPrefab: {fileID: 1206498299807332555, guid: af6c1e3f046eecd4d81330aeb285600f, type: 3}
-  moveSpeed: 3.5
   maxHP: 1000
   hp: 1000
-  ap: 100
-  qCoolDown: 2.5
-  wCoolDown: 1.5
 --- !u!195 &5652406446504348269
 NavMeshAgent:
   m_ObjectHideFlags: 0

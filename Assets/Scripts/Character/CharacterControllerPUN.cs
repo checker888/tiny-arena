@@ -186,7 +186,7 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable,IDamageab
             int damage = ap;
             // 1. 生成
             object[] instData = new object[] { damage, team, transform.forward, spawnPosition };
-            GameObject obj = PhotonNetwork.Instantiate("CFXR4 Sun", spawnPosition, fireRotation, 0, instData);
+            GameObject obj = PhotonNetwork.Instantiate("FireBall", spawnPosition, fireRotation, 0, instData);
         }
 
     }
@@ -202,7 +202,7 @@ public class CharacterControllerPun : MonoBehaviourPun, IPunObservable,IDamageab
             int damage = (int)(ap * 1.5f);
             // 1. 生成
             object[] instData = new object[] { damage, team, transform.forward, spawnPosition };
-            GameObject obj = PhotonNetwork.Instantiate("CFXR3 Magic Aura A (Runic)", spawnPosition, transform.rotation, 0, instData);
+            GameObject obj = PhotonNetwork.Instantiate("MagicCircle", spawnPosition, transform.rotation, 0, instData);
         }
     }
 

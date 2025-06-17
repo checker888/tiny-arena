@@ -4859,7 +4859,7 @@ GameObject:
   - component: {fileID: -8799154773915996973}
   - component: {fileID: 3041132814839144841}
   m_Layer: 0
-  m_Name: CFXR4 Sun
+  m_Name: FireBall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

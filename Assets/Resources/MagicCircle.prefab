@@ -14659,7 +14659,7 @@ GameObject:
   - component: {fileID: 7303113520057013594}
   - component: {fileID: 2760680455193730688}
   m_Layer: 0
-  m_Name: CFXR3 Magic Aura A (Runic)
+  m_Name: MagicCircle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
